@@ -27,7 +27,6 @@ func parseMemInfo(meminfo string) *MemoryInfo {
 
 	for _, line := range lines {
 		fields := strings.Fields(line)
-		fmt.Println(fields)
 		if len(fields) >= 2 {
 			switch fields[0] {
 			case "MemTotal:":
