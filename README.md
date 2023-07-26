@@ -13,7 +13,7 @@ Add some more functionality to it.
 
 Run the following to start the web service
 
-```   bash
+```bash
 
     go run .
 
