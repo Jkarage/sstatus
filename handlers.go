@@ -1,36 +1,32 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func memstats(w http.ResponseWriter, r *http.Request) {
+func memstats(c *fiber.Ctx) error {
 	mem, err := getMemoryStatus()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, "Internal server Error")
-		return
+		return c.Status(http.StatusInternalServerError).JSON("Couldn't read memory details")
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, "Total Memory: %d KB\nFree Memory:  %d  KB\nAvailable:    %d KB\n", mem.Total, mem.Free, mem.Available)
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"Total Memory": mem.Total,
+		"Free Memory":  mem.Free,
+		"Available":    mem.Available,
+	})
 }
 
-func cpustats(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "application/json")
+func cpustats(c *fiber.Ctx) error {
 	t, i, err := getCPUStats()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, "An Internal error occurred")
+		return c.Status(http.StatusInternalServerError).JSON("Couldn't read cpu details")
 	}
 
-	fmt.Fprintf(w, "CPU usage time:    %f\nThe cpu idle time: %f", t, i)
-}
-
-func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprintf(w, "Not Found")
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"CPU time": t,
+		"CPU idle": i,
+	})
 }

@@ -2,18 +2,15 @@ package main
 
 import (
 	"log"
-	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	r := mux.NewRouter()
+	app := fiber.New()
 
-	r.HandleFunc("/memstats", memstats)
-	r.HandleFunc("/cpustats", cpustats)
-	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
+	app.Get("/memstats", memstats)
+	app.Get("/cpustats", cpustats)
 
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Fatal(app.Listen(":3000"))
 }
