@@ -25,8 +25,8 @@ func cpustats(c *fiber.Ctx) error {
 		return c.Status(http.StatusInternalServerError).JSON("Couldn't read cpu details")
 	}
 
+	usage := 1 - (i / (t + i))
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"CPU time": t,
-		"CPU idle": i,
+		"CPU usage": usage * 100,
 	})
 }
