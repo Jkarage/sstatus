@@ -17,10 +17,10 @@ type MemoryInfo struct {
 	Available uint64
 }
 
-func getMemoryStatus() (*MemoryInfo, error) {
+func getMemoryStatus() (MemoryInfo, error) {
 	info, err := os.ReadFile("/proc/meminfo")
 	if err != nil {
-		return nil, err
+		return MemoryInfo{}, err
 	}
 
 	return parseMemInfo(string(info)), nil
@@ -80,7 +80,7 @@ func parseField(field string) (int64, error) {
 	return strconv.ParseInt(field, 10, 64)
 }
 
-func parseMemInfo(meminfo string) *MemoryInfo {
+func parseMemInfo(meminfo string) MemoryInfo {
 	m := MemoryInfo{}
 	lines := strings.Split(meminfo, "\n")
 
@@ -98,5 +98,5 @@ func parseMemInfo(meminfo string) *MemoryInfo {
 		}
 	}
 
-	return &m
+	return m
 }
