@@ -1,20 +1,18 @@
 # sstatus
 
-An api for displaying current different status of machines(server)
+An api for displaying current status of machines(server)
 
-    - Cpu status
-    - Memory status
-
-## Todo
-
-Add some more functionality to it.
+    - CPU usage
+    - Memory usage
 
 ## Installation
 
 Run the following to start the web service
 
-```bash
-
+``` golang
     go run .
-
 ```
+
+## Todo
+
+Add some more functionality to it.
